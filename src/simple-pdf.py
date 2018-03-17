@@ -1,6 +1,9 @@
 from fpdf import FPDF
+from SolveHash import SolveHash
 
 start_block_no = 0
+start_block_hash = '{0}'.format(''.join(map(str, [0] * 32)))
+
 name = 'Doga'
 surname = 'Yuksel'
 title = 'Frontend Developer'
@@ -8,6 +11,17 @@ phone_number = '0176 80783662'
 e_mail = 'doga@konfid.io'
 
 DEBUG = True
+
+sh = SolveHash(
+    start_block_no,
+    start_block_hash,
+    name,
+    surname,
+    title,
+    phone_number,
+    e_mail)
+
+nonce, hash = sh.solve()
 
 
 def do_header(pdf):
@@ -29,7 +43,7 @@ def do_header(pdf):
     pdf.cell(
         50,
         3,
-        '{0}'.format(''.join(map(str, [0] * 32))),
+        start_block_hash,
         fill=DEBUG
     )
     pdf.ln(10)
@@ -69,7 +83,7 @@ def do_footer(pdf):
     pdf.cell(
         20,
         4,
-        '{0}'.format(4781),
+        '{0}'.format(nonce),
         fill=DEBUG
     )
     pdf.ln()
@@ -80,7 +94,7 @@ def do_footer(pdf):
     pdf.cell(
         50,
         3,
-        '{0}'.format(''.join(map(str, [0] * 32))),
+        hash,
         fill=DEBUG
     )
 
